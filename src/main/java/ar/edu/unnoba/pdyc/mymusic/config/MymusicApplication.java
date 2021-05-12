@@ -1,4 +1,4 @@
-package ar.edu.unnoba.pdyc.mymusic;
+package ar.edu.unnoba.pdyc.mymusic.config;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
