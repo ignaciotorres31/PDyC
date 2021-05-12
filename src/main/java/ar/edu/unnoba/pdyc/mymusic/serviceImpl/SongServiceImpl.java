@@ -11,7 +11,6 @@ import java.util.List;
 @Service
 public class SongServiceImpl implements SongService {
 
-    @Autowired
     private SongRepository songRepository;
 
     @Override
