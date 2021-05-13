@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface SongService {
 
-    public List<Song> getSongs();
+    List<Song> getSongs();
 }
