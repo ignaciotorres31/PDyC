@@ -1,12 +1,13 @@
 package ar.edu.unnoba.pdyc.mymusic.resource;
 
+import ar.edu.unnoba.pdyc.mymusic.mymodelmapper.MyModelMapper;
 import ar.edu.unnoba.pdyc.mymusic.dto.SongListResponseDTO;
 import ar.edu.unnoba.pdyc.mymusic.model.Song;
 import ar.edu.unnoba.pdyc.mymusic.service.SongService;
-import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -20,15 +21,17 @@ public class SongResource {
 
     @Autowired
     private SongService songService;
-    @Autowired
-    private ModelMapper modelMapper;
+
+    private MyModelMapper modelMapper;
 
     @GET
+    @Path("/list")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSongs(){
+    public  List<Song> getSongs(){
+        MyModelMapper modelMapper = new MyModelMapper();
         List<Song> songs = songService.getSongs();
         Type listType = new TypeToken<List<SongListResponseDTO>>() {}.getType();
         List<SongListResponseDTO> songList = modelMapper.map(songs, listType);
-        return Response.ok(songList).build();
+        return songs;
     }
 }

@@ -1,11 +1,29 @@
 package ar.edu.unnoba.pdyc.mymusic.model;
 
-public enum Genre {
+import javax.persistence.*;
+import java.io.Serializable;
+@Entity
+@Table(name = "genre")
+public class Genre implements Serializable {
 
-    ROCK,
-    TECHNO,
-    POP,
-    JAZZ,
-    FOLK,
-    CLASSICAL;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

@@ -1,13 +1,13 @@
 package ar.edu.unnoba.pdyc.mymusic.dto;
 
-import ar.edu.unnoba.pdyc.mymusic.model.Genre;
+import ar.edu.unnoba.pdyc.mymusic.constant.GenreEnum;
 
 public class SongListResponseDTO {
 
     private Long id;
     private String name;
     private String author;
-    private Genre genre;
+    private String genre;
 
     public Long getId() {
         return id;
@@ -33,11 +33,11 @@ public class SongListResponseDTO {
         this.author = author;
     }
 
-    public Genre getGenre() {
+    public String getGenre() {
         return genre;
     }
 
-    public void setGenre(Genre genre) {
+    public void setGenre(String genre) {
         this.genre = genre;
     }
 }

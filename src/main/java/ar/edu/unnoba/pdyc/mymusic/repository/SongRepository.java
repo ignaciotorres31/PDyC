@@ -4,8 +4,7 @@ import ar.edu.unnoba.pdyc.mymusic.model.Song;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository("songRepository")
+@Repository
 public interface SongRepository extends JpaRepository <Song,Long> {
-
 
 }
