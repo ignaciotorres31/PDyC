@@ -22,16 +22,16 @@ public class SongResource {
     @Autowired
     private SongService songService;
 
-    private MyModelMapper modelMapper;
+    private MyModelMapper modelMapper = new MyModelMapper();
 
     @GET
     @Path("/list")
     @Produces(MediaType.APPLICATION_JSON)
-    public  List<Song> getSongs(){
+    public  Response getSongs(){
         MyModelMapper modelMapper = new MyModelMapper();
         List<Song> songs = songService.getSongs();
         Type listType = new TypeToken<List<SongListResponseDTO>>() {}.getType();
         List<SongListResponseDTO> songList = modelMapper.map(songs, listType);
-        return songs;
+        return Response.ok(songList.toString()).build();
     }
 }
