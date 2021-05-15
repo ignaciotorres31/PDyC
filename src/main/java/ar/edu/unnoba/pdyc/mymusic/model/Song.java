@@ -12,6 +12,7 @@ public class Song implements Serializable {
     private Long id;
     private String name;
     private String author;
+    @Enumerated(EnumType.STRING)
     private Genre genre;
 
     public String getName() {

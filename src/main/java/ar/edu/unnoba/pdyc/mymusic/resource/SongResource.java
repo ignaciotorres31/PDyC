@@ -19,9 +19,9 @@ import java.util.List;
 public class SongResource {
 
     @Autowired
-    private SongService songService;
-    @Autowired
-    private ModelMapper modelMapper;
+    SongService songService;
+
+    ModelMapper modelMapper=new ModelMapper();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -29,6 +29,7 @@ public class SongResource {
         List<Song> songs = songService.getSongs();
         Type listType = new TypeToken<List<SongListResponseDTO>>() {}.getType();
         List<SongListResponseDTO> songList = modelMapper.map(songs, listType);
-        return Response.ok(songList).build();
+        return Response.ok(songList.toString()).build();
+        //return Response.ok("hola").build();
     }
 }
