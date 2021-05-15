@@ -27,11 +27,10 @@ public class SongResource {
     @GET
     @Path("/list")
     @Produces(MediaType.APPLICATION_JSON)
-    public  Response getSongs(){
-        MyModelMapper modelMapper = new MyModelMapper();
+    public  List<SongListResponseDTO> getSongs(){
         List<Song> songs = songService.getSongs();
         Type listType = new TypeToken<List<SongListResponseDTO>>() {}.getType();
         List<SongListResponseDTO> songList = modelMapper.map(songs, listType);
-        return Response.ok(songList.toString()).build();
+        return songList;
     }
 }
