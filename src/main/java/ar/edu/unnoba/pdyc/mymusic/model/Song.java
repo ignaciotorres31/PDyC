@@ -1,7 +1,5 @@
 package ar.edu.unnoba.pdyc.mymusic.model;
 
-import ar.edu.unnoba.pdyc.mymusic.constant.GenreEnum;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -14,9 +12,12 @@ public class Song implements Serializable {
     private Long id;
     private String name;
     private String author;
-    @JoinColumn(name = "genre_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @Enumerated(value = EnumType.STRING)
     private Genre genre;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User owner;
 
     public String getName() {
         return name;
@@ -48,5 +49,13 @@ public class Song implements Serializable {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }

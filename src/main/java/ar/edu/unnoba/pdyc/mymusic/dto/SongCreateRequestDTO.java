@@ -2,19 +2,18 @@ package ar.edu.unnoba.pdyc.mymusic.dto;
 
 import ar.edu.unnoba.pdyc.mymusic.model.Genre;
 
-public class SongListResponseDTO {
+public class SongCreateRequestDTO {
 
-    private Long id;
-    private String name;
     private String author;
+    private String name;
     private Genre genre;
 
-    public Long getId() {
-        return id;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getName() {
@@ -23,14 +22,6 @@ public class SongListResponseDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public Genre getGenre() {

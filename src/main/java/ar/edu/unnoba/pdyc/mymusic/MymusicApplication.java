@@ -1,12 +1,20 @@
 package ar.edu.unnoba.pdyc.mymusic;
 
+import ar.edu.unnoba.pdyc.mymusic.model.Genre;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class MymusicApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MymusicApplication.class, args);
+	}
+
+	@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 }
