@@ -17,7 +17,7 @@ public class Playlist implements Serializable {
 
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private User userId;
+    private User owner;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "playlists_songs",inverseJoinColumns = @JoinColumn(name = "song_id"))
@@ -39,12 +39,12 @@ public class Playlist implements Serializable {
         this.name = name;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public List<Song> getSongs() {
@@ -53,9 +53,5 @@ public class Playlist implements Serializable {
 
     public void setSongs(List<Song> songs) {
         this.songs = songs;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
     }
 }

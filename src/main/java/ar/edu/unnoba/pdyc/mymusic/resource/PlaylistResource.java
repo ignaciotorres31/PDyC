@@ -28,6 +28,7 @@ public class PlaylistResource {
     private MyModelMapper modelMapper = new MyModelMapper();
 
     @GET
+    @Path("/list")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPlaylist(){
         List<Playlist> playlists = playlistService.findAll();
@@ -41,9 +42,9 @@ public class PlaylistResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createPlaylist(PlaylistCreateRequestDTO playlistCreateRequestDTO){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String ownerEmail = (String)auth.getPrincipal();
-        Playlist playlist = modelMapper.map(playlistCreateRequestDTO,Playlist.class);
-        playlistService.create(playlist, ownerEmail);
-        return Response.ok().build();
+        String ownerEmail = (String) auth.getPrincipal();
+        Playlist playlist = playlistService.create(playlistCreateRequestDTO, ownerEmail);
+        PlaylistResponseDTO playlistResponseDTO = modelMapper.map(playlist,PlaylistResponseDTO.class);
+        return Response.ok(playlistResponseDTO).build();
     }
 }
