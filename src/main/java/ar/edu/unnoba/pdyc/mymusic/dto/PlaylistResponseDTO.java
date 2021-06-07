@@ -1,26 +1,15 @@
-package ar.edu.unnoba.pdyc.mymusic.model;
+package ar.edu.unnoba.pdyc.mymusic.dto;
 
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import ar.edu.unnoba.pdyc.mymusic.model.Song;
+import ar.edu.unnoba.pdyc.mymusic.model.User;
 
-import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
-@Entity
-@Table(name = "playlists")
-public class Playlist implements Serializable {
+public class PlaylistResponseDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
     private User userId;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "playlists_songs",inverseJoinColumns = @JoinColumn(name = "song_id"))
     private List<Song> songs;
 
     public Long getId() {
@@ -53,9 +42,5 @@ public class Playlist implements Serializable {
 
     public void setSongs(List<Song> songs) {
         this.songs = songs;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
     }
 }
