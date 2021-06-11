@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "users")
-public class User implements Serializable, UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +36,7 @@ public class User implements Serializable, UserDetails {
         this.email = email;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -51,27 +52,27 @@ public class User implements Serializable, UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return this.email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true ;
     }
 
     @Override

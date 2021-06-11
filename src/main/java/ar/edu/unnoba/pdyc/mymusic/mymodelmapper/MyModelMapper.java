@@ -1,8 +1,9 @@
 package ar.edu.unnoba.pdyc.mymusic.mymodelmapper;
 
+import ar.edu.unnoba.pdyc.mymusic.dto.PlaylistResponseDTO;
 import ar.edu.unnoba.pdyc.mymusic.dto.SongCreateRequestDTO;
 import ar.edu.unnoba.pdyc.mymusic.dto.SongListResponseDTO;
-import ar.edu.unnoba.pdyc.mymusic.dto.SongUpdateRequestDTO;
+import ar.edu.unnoba.pdyc.mymusic.model.Playlist;
 import ar.edu.unnoba.pdyc.mymusic.model.Song;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -19,7 +20,7 @@ public class MyModelMapper extends ModelMapper {
         //aca adentro van los addMappings(name());
         this.addMappings(configSongToListDTO());
         this.addMappings(configCreateDTOToSong());
-        this.addMappings(configUpdateDTOToSong());
+        this.addMappings(configPlaylistToPlaylistDTO());
     }
 
     //aca va el mapeo
@@ -27,7 +28,6 @@ public class MyModelMapper extends ModelMapper {
     		return new PropertyMap<Song, SongListResponseDTO>() {
     			@Override
     			protected void configure() {
-    			    map().setGenre(source.getGenre());
     			}
     		};
     	}
@@ -36,14 +36,18 @@ public class MyModelMapper extends ModelMapper {
         return new PropertyMap<SongCreateRequestDTO, Song>() {
             @Override
             protected void configure(){
+                map().setGenre(source.getGenre());
+                map().setAuthor(source.getAuthor());
+                map().setName(source.getName());
             }
         };
     }
 
-    private PropertyMap<SongUpdateRequestDTO, Song> configUpdateDTOToSong() {
-        return new PropertyMap<SongUpdateRequestDTO, Song>() {
+    private PropertyMap<Playlist, PlaylistResponseDTO> configPlaylistToPlaylistDTO() {
+        return new PropertyMap<Playlist, PlaylistResponseDTO>() {
             @Override
             protected void configure(){
+                map().setUserId(source.getOwner());
             }
         };
     }

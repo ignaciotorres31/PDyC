@@ -1,12 +1,14 @@
 package ar.edu.unnoba.pdyc.mymusic.dto;
 
 
+import ar.edu.unnoba.pdyc.mymusic.model.Song;
+
 import java.util.List;
 
 public class PlaylistCreateRequestDTO {
 
     private String name;
-    private List<Long> songId;
+    private List<Long> songsId;
 
     public String getName() {
         return name;
@@ -16,11 +18,11 @@ public class PlaylistCreateRequestDTO {
         this.name = name;
     }
 
-    public List<Long> getSongId() {
-        return songId;
+    public List<Long> getSongsId() {
+        return songsId;
     }
 
-    public void setSongId(List<Long> songId) {
-        this.songId = songId;
+    public void setSongsId(List<Long> songsId) {
+        this.songsId = songsId;
     }
 }

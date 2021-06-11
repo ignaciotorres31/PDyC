@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface SongService {
 
-    List<Song> getSongs(String author, Genre genre);
+    List<Song> getSongs(String author, String genre);
 
     void create(Song song, String ownerEmail);
 

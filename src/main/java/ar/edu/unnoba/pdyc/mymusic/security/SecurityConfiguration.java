@@ -29,8 +29,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/songs/list").permitAll()
-                .antMatchers("/**").fullyAuthenticated()
+                .antMatchers(HttpMethod.POST, "/users/create").permitAll()
+                .antMatchers(HttpMethod.POST, "/songs/list").permitAll()
+                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
@@ -45,6 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+
         final CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
@@ -52,6 +55,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("*//**", configuration);
+        /*para sacar comentario borrar una barra de la linea de arriba*/
+        /*final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());*/
         return source;
     }
 }

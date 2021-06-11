@@ -20,8 +20,8 @@ public class SongServiceImpl implements SongService {
     UserRepository userRepository;
 
     @Override
-    public List<Song> getSongs(String author, Genre genre){
-        return songRepository.findByAuthorAndGenre(author, genre);
+    public List<Song> getSongs(String author, String genre){
+        return songRepository.findByAuthorAndGenre(author, Genre.valueOf(genre));
     }
 
     @Override
@@ -36,6 +36,7 @@ public class SongServiceImpl implements SongService {
         User user = userRepository.findByEmail(userEmail);
         Song songDB = songRepository.findById(id).get();
         if(songDB.getOwner().equals(user)){
+            songDB.setGenre(song.getGenre());
             songDB.setAuthor(song.getAuthor());
             songDB.setName(song.getName());
             songRepository.save(songDB);

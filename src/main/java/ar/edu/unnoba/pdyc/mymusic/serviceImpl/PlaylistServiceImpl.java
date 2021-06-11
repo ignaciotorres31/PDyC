@@ -11,7 +11,9 @@ import ar.edu.unnoba.pdyc.mymusic.service.PlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlaylistServiceImpl implements PlaylistService {
@@ -26,11 +28,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public Playlist create(PlaylistCreateRequestDTO playlistCreateRequestDTO, String ownerEmail) {
         User user = userRepository.findByEmail(ownerEmail);
-        Playlist playlist = playlistRepository.findByOwnerAndName(user, playlistCreateRequestDTO.getName());
-        List<Song> songs = songRepository.findAllById(playlistCreateRequestDTO.getSongId());
-        if (playlist != null) {
-            return playlist;
-        }
+        List<Song> songs = songRepository.findAllById(playlistCreateRequestDTO.getSongsId());
 
         Playlist newPlaylist = new Playlist();
         newPlaylist.setName(playlistCreateRequestDTO.getName());
@@ -40,7 +38,54 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public List<Playlist> findAll(){
-        return playlistRepository.findAll();
+    public List<Playlist> findAllByOwner(String ownerEmail){
+        User user = userRepository.findByEmail(ownerEmail);
+        return playlistRepository.findByOwner(user);
+    }
+
+    @Override
+    @Transactional
+    public Playlist update(Long id, String name, String userEmail) throws Exception {
+        Playlist p = playlistRepository.findById(id).get();
+        if (!p.getOwner().getEmail().equals(userEmail)) {
+            throw new Exception();
+        }
+        p.setName(name);
+        return playlistRepository.save(p);
+    }
+
+    @Override
+    @Transactional
+    public Playlist addSong(Long id, Song song, String userEmail) throws Exception {
+        Playlist playlist = playlistRepository.findById(id).get();
+        if (!playlist.getOwner().getEmail().equals(userEmail)) {
+            throw new Exception();
+        }
+        song = songRepository.findById(song.getId()).get();
+        playlist.getSongs().add(song);
+        playlist = playlistRepository.save(playlist);
+        return playlist;
+    }
+
+    @Override
+    @Transactional
+    public Playlist removeSong(Long id, Long songId, String userEmail) throws Exception {
+        Playlist playlist = playlistRepository.findById(id).get();
+        if (!playlist.getOwner().getEmail().equals(userEmail)) {
+            throw new Exception();
+        }
+        Song song = songRepository.findById(songId).get();
+
+        playlist.getSongs().remove(song);
+        return playlistRepository.save(playlist);
+    }
+
+    @Override
+    public void delete(Long id, String userEmail) throws Exception {
+        Playlist playlist = playlistRepository.findById(id).get();
+        if (!playlist.getOwner().getEmail().equals(userEmail)) {
+            throw new Exception();
+        }
+        playlistRepository.deleteById(id);
     }
 }

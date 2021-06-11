@@ -10,6 +10,13 @@ public interface PlaylistService {
 
     Playlist create(PlaylistCreateRequestDTO playlistCreateRequestDTO, String ownerEmail);
 
-    List<Playlist> findAll();
+    List<Playlist> findAllByOwner(String ownerEmail);
 
+    Playlist update(Long id, String name, String userEmail) throws Exception;
+
+    Playlist addSong(Long id, Song song, String userName)throws Exception;
+
+    Playlist removeSong(Long id, Long songId, String userName) throws Exception;
+
+    void delete(Long id, String userName)throws Exception;
 }

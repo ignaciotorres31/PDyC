@@ -1,8 +1,11 @@
 package ar.edu.unnoba.pdyc.mymusic.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class AuthenticationRequestDTO {
 
     private String email;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     public String getEmail() {
