@@ -7,9 +7,11 @@ import ar.edu.unnoba.pdyc.mymusic.repository.SongRepository;
 import ar.edu.unnoba.pdyc.mymusic.repository.UserRepository;
 import ar.edu.unnoba.pdyc.mymusic.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class SongServiceImpl implements SongService {
@@ -25,6 +27,13 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    @Async("taskExecutor")
+    public CompletableFuture<List<Song>> getSongsAsinc(String author, String genre) {
+        List<Song> songList = songRepository.findByAuthorAndGenre(author, Genre.valueOf(genre));
+        return CompletableFuture.completedFuture(songRepository.findByAuthorAndGenre(author, Genre.valueOf(genre)));
+    }
+
+    @Override
     public void create(Song song, String ownerEmail) {
         User user = userRepository.findByEmail(ownerEmail);
         song.setOwner(user);
@@ -35,6 +44,7 @@ public class SongServiceImpl implements SongService {
     public void update(Long id, Song song, String userEmail) throws Exception {
         User user = userRepository.findByEmail(userEmail);
         Song songDB = songRepository.findById(id).get();
+
         if(songDB.getOwner().equals(user)){
             songDB.setGenre(song.getGenre());
             songDB.setAuthor(song.getAuthor());

@@ -9,11 +9,13 @@ import ar.edu.unnoba.pdyc.mymusic.repository.SongRepository;
 import ar.edu.unnoba.pdyc.mymusic.repository.UserRepository;
 import ar.edu.unnoba.pdyc.mymusic.service.PlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class PlaylistServiceImpl implements PlaylistService {
@@ -63,8 +65,7 @@ public class PlaylistServiceImpl implements PlaylistService {
         }
         song = songRepository.findById(song.getId()).get();
         playlist.getSongs().add(song);
-        playlist = playlistRepository.save(playlist);
-        return playlist;
+        return playlistRepository.save(playlist);
     }
 
     @Override
@@ -87,5 +88,12 @@ public class PlaylistServiceImpl implements PlaylistService {
             throw new Exception();
         }
         playlistRepository.deleteById(id);
+    }
+
+    @Override
+    @Async("taskExecutor")
+    public CompletableFuture<List<Playlist>> getPlaylistsAsync(String ownerEmail) throws Exception{
+        User user = userRepository.findByEmail(ownerEmail);
+        return CompletableFuture.completedFuture(playlistRepository.findByOwner(user));
     }
 }

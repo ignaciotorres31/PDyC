@@ -6,10 +6,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public interface SongService {
 
     List<Song> getSongs(String author, String genre);
+
+    CompletableFuture<List<Song>> getSongsAsinc(String author, String genre);
 
     void create(Song song, String ownerEmail);
 

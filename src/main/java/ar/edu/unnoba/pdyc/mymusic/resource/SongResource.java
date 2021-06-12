@@ -1,6 +1,7 @@
 package ar.edu.unnoba.pdyc.mymusic.resource;
 
 import ar.edu.unnoba.pdyc.mymusic.dto.SongCreateRequestDTO;
+import ar.edu.unnoba.pdyc.mymusic.model.Genre;
 import ar.edu.unnoba.pdyc.mymusic.mymodelmapper.MyModelMapper;
 import ar.edu.unnoba.pdyc.mymusic.dto.SongListResponseDTO;
 import ar.edu.unnoba.pdyc.mymusic.model.Song;
@@ -12,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.ws.rs.*;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.lang.reflect.Type;
@@ -33,6 +36,18 @@ public class SongResource {
         Type listType = new TypeToken<List<SongListResponseDTO>>() {}.getType();
         List<SongListResponseDTO> songList = modelMapper.map(songs, listType);
         return Response.ok(songList).build();
+    }
+
+    @GET
+    @Path("/list-async")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void getSongsAsync(@QueryParam("author") String author, @QueryParam("genre") String genre,
+                              @Suspended AsyncResponse response) {
+        songService.getSongsAsinc(author, genre).thenAccept((list) -> {
+            Type listType = new TypeToken<List<SongListResponseDTO>>() {}.getType();
+            List<SongListResponseDTO> listDTO = modelMapper.map(list, listType);
+            response.resume(Response.ok(listDTO).build());
+        });
     }
 
     @POST

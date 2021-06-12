@@ -5,6 +5,8 @@ import ar.edu.unnoba.pdyc.mymusic.model.Playlist;
 import ar.edu.unnoba.pdyc.mymusic.model.Song;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
 public interface PlaylistService {
 
@@ -19,4 +21,6 @@ public interface PlaylistService {
     Playlist removeSong(Long id, Long songId, String userName) throws Exception;
 
     void delete(Long id, String userName)throws Exception;
+
+     CompletableFuture<List<Playlist>> getPlaylistsAsync(String ownerEmail) throws  Exception;
 }

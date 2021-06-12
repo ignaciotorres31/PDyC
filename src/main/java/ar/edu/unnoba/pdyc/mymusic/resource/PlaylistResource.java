@@ -15,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.ws.rs.*;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.lang.reflect.Type;
@@ -38,6 +40,24 @@ public class PlaylistResource {
         Type listType = new TypeToken<List<PlaylistResponseDTO>>() {}.getType();
         List<PlaylistResponseDTO> playlist = modelMapper.map(playlists, listType);
         return Response.ok(playlist).build();
+    }
+
+
+    @GET
+    @Path("/list-async")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void getPlaylistAsync(@Suspended AsyncResponse response){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String ownerEmail = (String) auth.getPrincipal();
+        try {
+            playlistService.getPlaylistsAsync(ownerEmail).thenAccept((list) -> {
+                Type listType = new TypeToken<List<PlaylistResponseDTO>>(){}.getType();
+                List<PlaylistResponseDTO> listDTO = modelMapper.map(list, listType);
+                response.resume(Response.ok(listDTO).build());
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @POST
@@ -66,7 +86,7 @@ public class PlaylistResource {
     }
 
     @POST
-    @Path("/{id}/add-song")
+    @Path("/add-song/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addSong(@PathParam("id") Long id, SongListResponseDTO songDTO) {
